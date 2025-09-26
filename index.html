@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style>
+        body {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        img {
+            position: absolute;
+            /* adjust size */
+        }
+        /* First image: base layer */
+        
+        img:nth-of-type(1) {
+            top: 0;
+            width: 100%;
+            height: 60%;
+            z-index: 1;
+        }
+        /* Second image: on top of first */
+        
+        img:nth-of-type(2) {
+            top: 10%;
+            left: 2%;
+            width: 10%;
+            z-index: 2;
+            opacity: 0.9;
+        }
+        /* Third image: on top of both */
+        
+        img:nth-of-type(3) {
+            top: 20%;
+            right: 30%;
+            z-index: 3;
+            opacity: 0.8;
+        }
+        
+        img:nth-of-type(4) {
+            top: 57%;
+            height: 8%;
+            right: 60%;
+            z-index: 3;
+            opacity: 1;
+        }
+        
+        img:nth-of-type(5) {
+            top: 60%;
+            height: 18%;
+            right: 70%;
+            z-index: 3;
+            opacity: 0.8;
+        }
+        
+        .center-text {
+            position: absolute;
+            top: 63%;
+            left: 30%;
+            z-index: 3;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 0;
+            text-align: center;
+            max-width: 50%;
+            font-size: 50px;
+        }
+        /* ==== Hamburger & dropdown ==== */
+        
+        .menu {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            cursor: pointer;
+            z-index: 999;
+            user-select: none;
+        }
+        
+        .menu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            padding: 8px 0;
+            border-radius: 4px;
+            min-width: 120px;
+        }
+        
+        .menu .dropdown a {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .menu .dropdown a:hover {
+            background: #f57224;
+            color: white;
+        }
+        
+        .menu.active .dropdown {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="baba1.jpg" alt="Image 1">
+    <img src="becongress.png" alt="Image 2">
+    <img src="pollinuk.png" alt="Image 3">
+    <img src="comma.png" alt="Image 4">
+    <img src="baba2.jpg" alt="Image 5">
+
+    <div class="center-text">
+        <p>Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit.</p>
+    </div>
+
+    <!-- Hamburger menu -->
+    <div class="menu">
+        ☰
+        <div class="dropdown">
+            <a href="index.html">Home</a>
+            <a href="checkout.html">Checkout</a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.menu').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    </script>
+
+</body>
+
+</html>
