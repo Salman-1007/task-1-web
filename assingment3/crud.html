@@ -276,7 +276,7 @@
     <header>
         <div class="container">
             <div class="logo">
-                <img src="becongress.png" alt="Logo">
+                <img src="/images/becongress.png" alt="Logo">
             </div>
             <nav>
                 <div class="menu" id="menuBtn">☰</div>
@@ -287,9 +287,9 @@
     <!-- Fullscreen Overlay Menu -->
     <div class="overlay" id="overlayMenu">
         <span class="close-btn" id="closeBtn">✖</span>
-        <a href="index.html">Home</a>
-        <a href="checkout2.html">Checkout</a>
-        <a href="crud.html">My Orders</a>
+        <a href="/lab task 1/index.html">Home</a>
+        <a href="/Assingment 2/checkout2.html">Checkout</a>
+        <a href="/assingment3/crud.html">My Orders</a>
     </div>
 
     <!-- Loading Spinner Overlay -->
@@ -473,7 +473,6 @@
                         ordersCache.push(...data);
                         renderOrders(data);
                         updateStats(data.length);
-                        showToast(`Loaded ${data.length} orders`, "info");
                     },
                     error: function(xhr, status, error) {
                         hideSpinner();
@@ -558,16 +557,8 @@
                             hideSpinner();
                             showToast("Order updated successfully! ✓", "success");
 
-                            // Update in cache and re-render
-                            const index = ordersCache.findIndex(o => o.id === editingId);
-                            if (index !== -1) {
-                                ordersCache[index] = {
-                                    id: editingId,
-                                    title,
-                                    content
-                                };
-                                renderOrders(ordersCache);
-                            }
+                            // Reload orders from server to get fresh data
+                            loadOrders();
 
                             resetForm();
                         },
@@ -591,16 +582,15 @@
                             hideSpinner();
                             showToast("Order added successfully! ✓", "success");
 
-                            // Add to cache and re-render
-                            ordersCache.push(response);
-                            renderOrders(ordersCache);
-                            updateStats(ordersCache.length);
+                            // Reload orders from server to get fresh data with proper IDs
+                            loadOrders();
 
                             resetForm();
                         },
                         error: function(xhr, status, error) {
                             hideSpinner();
                             console.error("Error adding order:", error);
+                            console.log("Response:", xhr.responseText);
                             showToast("Failed to add order. Please try again.", "danger");
                         }
                     });
@@ -649,17 +639,12 @@
                             hideSpinner();
                             showToast("Order deleted successfully! ✓", "success");
 
-                            // Remove from cache and re-render
-                            const index = ordersCache.findIndex(o => o.id === id);
-                            if (index !== -1) {
-                                ordersCache.splice(index, 1);
-                                renderOrders(ordersCache);
-                                updateStats(ordersCache.length);
-                            }
-
                             // Animate row removal
                             row.fadeOut(300, function() {
                                 $(this).remove();
+
+                                // Reload orders to keep cache in sync
+                                loadOrders();
                             });
                         },
                         error: function(xhr, status, error) {
