@@ -9,7 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
          :root {
-            --primary-color: #007b --secondary-color: #f0f2f5;
+            --primary-color: #ff0008;
+            --secondary-color: #f0f2f5;
             --accent-color: #28a745;
             --dark-color: #343a40;
             --light-gray: #e9ecef;
@@ -25,8 +26,7 @@
             min-height: 100vh;
             color: var(--dark-color);
         }
-        
-        .navbar {
+        /* .navbar {
             background-color: #ffffff;
             box-shadow: var(--box-shadow);
             padding: 1rem 0;
@@ -101,6 +101,93 @@
         
         .dropdown-item:last-child {
             border-bottom: none;
+        } */
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        nav .menu {
+            font-size: 28px;
+            cursor: pointer;
+            color: #cb2843;
+            transition: transform 0.3s;
+        }
+        
+        nav .menu:hover {
+            transform: scale(1.1);
+        }
+        /* Fullscreen Overlay Menu */
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c32127 0%, #cb2626 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        
+        .overlay.active {
+            opacity: 0.95;
+            visibility: visible;
+        }
+        
+        .overlay .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .overlay .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        
+        .overlay a {
+            display: block;
+            margin: 20px;
+            font-size: 32px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        
+        .overlay.active a {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .checkout-container {
@@ -326,17 +413,23 @@
             font-size: 0.875rem;
             font-weight: 500;
         }
-        /* Added new styling for the validation message */
+        /* jQuery Validation Plugin Error Styling */
         
-        .form-validation {
-            display: none;
+        label.error {
             color: #dc3545;
             font-size: 0.875rem;
             margin-top: 0.25rem;
+            display: block;
         }
         
-        .form-validation.show {
-            display: block;
+        input.error,
+        textarea.error {
+            border-color: #dc3545 !important;
+        }
+        
+        input.valid,
+        textarea.valid {
+            border-color: #28a745 !important;
         }
         
         @keyframes slideIn {
@@ -373,7 +466,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <!-- <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="becongress.png" alt="Be Congress" style="height:40px;">
@@ -409,7 +502,28 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav> -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="becongress.png" alt="Logo">
+            </div>
+            <nav>
+                <div class="menu" id="menuBtn">☰</div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Fullscreen Overlay Menu -->
+    <div class="overlay" id="overlayMenu" style="font-family: Arial, Helvetica, sans-serif;">
+        <span class="close-btn" id="closeBtn">✖</span>
+        <a href="index.html">Home</a>
+        <a href="checkout2.html">Checkout</a>
+        <a href="crud.html">My Orders</a>
+    </div>
+
+
+
 
     <div class="checkout-container" style="margin-top: 100px;">
         <div class="progress-bar-container">
@@ -450,20 +564,18 @@
                         <i class="fas fa-shipping-fast me-2"></i> Shipping Information
                     </div>
                     <div class="card-body">
-                        <form id="checkoutForm" onsubmit="return validateForm()">
+                        <form id="checkoutForm">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="fullName" placeholder="Full Name" required>
+                                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full Name" required>
                                         <label for="fullName">Full Name *</label>
-                                        <div class="form-validation">Please enter your full name</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
+                                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
                                         <label for="phone">Phone Number *</label>
-                                        <div class="form-validation">Please enter a valid phone number</div>
                                     </div>
                                 </div>
                             </div>
@@ -471,28 +583,25 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="address" placeholder="Address" required>
+                                        <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
                                         <label for="address">Street Address *</label>
-                                        <div class="form-validation">Please enter your address</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="city" placeholder="City" required>
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
                                         <label for="city">City *</label>
-                                        <div class="form-validation">Please enter your city</div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                                 <label for="email">Email Address</label>
-                                <div class="form-validation">Please enter a valid email</div>
                             </div>
 
                             <div class="form-floating">
-                                <textarea class="form-control" id="notes" placeholder="Delivery Notes" style="height: 100px"></textarea>
+                                <textarea class="form-control" id="notes" name="notes" placeholder="Delivery Notes" style="height: 100px"></textarea>
                                 <label for="notes">Delivery Notes (Optional)</label>
                             </div>
                         </form>
@@ -553,25 +662,25 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cardNumber" placeholder="Card Number">
+                                        <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number">
                                         <label for="cardNumber">Card Number</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cardName" placeholder="Cardholder Name">
+                                        <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Cardholder Name">
                                         <label for="cardName">Cardholder Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="expiry" placeholder="MM/YY">
+                                        <input type="text" class="form-control" id="expiry" name="expiry" placeholder="MM/YY">
                                         <label for="expiry">MM/YY</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="cvv" placeholder="CVV">
+                                        <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV">
                                         <label for="cvv">CVV</label>
                                     </div>
                                 </div>
@@ -646,8 +755,112 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        $(document).ready(function() {
+            // jQuery Validation
+            $("#checkoutForm").validate({
+                rules: {
+                    fullName: {
+                        required: true,
+                        minlength: 3
+                    },
+                    phone: {
+                        required: true,
+                        minlength: 10,
+                        digits: true
+                    },
+                    address: {
+                        required: true,
+                        minlength: 10
+                    },
+                    city: {
+                        required: true,
+                        minlength: 3
+                    },
+                    email: {
+                        email: true
+                    },
+                    cardNumber: {
+                        required: function() {
+                            return $("#card").is(":checked");
+                        },
+                        digits: true,
+                        minlength: 16,
+                        maxlength: 16
+                    },
+                    cardName: {
+                        required: function() {
+                            return $("#card").is(":checked");
+                        },
+                        minlength: 3
+                    },
+                    expiry: {
+                        required: function() {
+                            return $("#card").is(":checked");
+                        },
+                        minlength: 5
+                    },
+                    cvv: {
+                        required: function() {
+                            return $("#card").is(":checked");
+                        },
+                        digits: true,
+                        minlength: 3,
+                        maxlength: 4
+                    }
+                },
+                messages: {
+                    fullName: {
+                        required: "Please enter your full name",
+                        minlength: "Name must be at least 3 characters"
+                    },
+                    phone: {
+                        required: "Please enter your phone number",
+                        minlength: "Phone number must be at least 10 digits",
+                        digits: "Please enter only numbers"
+                    },
+                    address: {
+                        required: "Please enter your address",
+                        minlength: "Address must be at least 10 characters"
+                    },
+                    city: {
+                        required: "Please enter your city",
+                        minlength: "City must be at least 3 characters"
+                    },
+                    email: {
+                        email: "Please enter a valid email address"
+                    },
+                    cardNumber: {
+                        required: "Please enter card number",
+                        digits: "Card number must contain only digits",
+                        minlength: "Card number must be 16 digits",
+                        maxlength: "Card number must be 16 digits"
+                    },
+                    cardName: {
+                        required: "Please enter cardholder name",
+                        minlength: "Name must be at least 3 characters"
+                    },
+                    expiry: {
+                        required: "Please enter expiry date",
+                        minlength: "Format should be MM/YY"
+                    },
+                    cvv: {
+                        required: "Please enter CVV",
+                        digits: "CVV must contain only digits",
+                        minlength: "CVV must be 3-4 digits"
+                    }
+                },
+                submitHandler: function(form) {
+                    // If validation passes, redirect to success page
+                    window.location.href = 'success.html';
+                    return false;
+                }
+            });
+        });
+
         function selectPayment(element, type) {
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
@@ -661,58 +874,8 @@
             } else {
                 cardDetails.style.display = 'none';
             }
-        }
-
-        // The new validation function
-        function validateForm() {
-            const fullName = document.getElementById('fullName').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const city = document.getElementById('city').value.trim();
-            const email = document.getElementById('email').value.trim();
-
-            let isValid = true;
-
-            // Function to show/hide validation messages
-            function showValidation(id, isFieldValid) {
-                const element = document.getElementById(id);
-                const validationDiv = element.nextElementSibling;
-                if (!isFieldValid) {
-                    validationDiv.classList.add('show');
-                    element.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    validationDiv.classList.remove('show');
-                    element.classList.remove('is-invalid');
-                }
-            }
-
-            // Simple validation checks
-            showValidation('fullName', fullName !== '');
-            showValidation('phone', phone !== '');
-            showValidation('address', address !== '');
-            showValidation('city', city !== '');
-
-
-            // Optional email validation (simple check)
-            if (email !== '' && !email.includes('@')) {
-                const emailInput = document.getElementById('email');
-                const validationDiv = emailInput.nextElementSibling;
-                validationDiv.textContent = 'Please enter a valid email address';
-                validationDiv.classList.add('show');
-                emailInput.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                document.getElementById('email').nextElementSibling.classList.remove('show');
-                document.getElementById('email').classList.remove('is-invalid');
-            }
-
-            // If the form is valid, redirect to the success page
-            if (isValid) {
-                window.location.href = 'success.html';
-            }
-
-            return false; // Prevent default form submission
+            // Revalidate form when payment method changes
+            $("#checkoutForm").valid();
         }
 
         function applyPromo() {
@@ -750,6 +913,26 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             updateTotal();
+        });
+
+        // Menu Toggle Navigation
+        const menuBtn = document.getElementById('menuBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const overlayMenu = document.getElementById('overlayMenu');
+
+        menuBtn.addEventListener('click', () => {
+            overlayMenu.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            overlayMenu.classList.remove('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.overlay a').forEach(link => {
+            link.addEventListener('click', () => {
+                overlayMenu.classList.remove('active');
+            });
         });
     </script>
 </body>
