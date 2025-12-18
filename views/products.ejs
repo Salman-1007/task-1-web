@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        /* Force the header to the top layer */
+        
+        header,
+        .navbar {
+            position: relative !important;
+            z-index: 9999 !important;
+        }
+        /* Ensure the body content doesn't jump over it */
+        
+        .products-container {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= typeof title !== 'undefined' ? title : 'Products' %>
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/products.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="products-container">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-3 mb-4">
+                        <div class="filter-card">
+                            <h5 class="filter-title">
+                                <i class="fas fa-filter me-2"></i>Filters
+                            </h5>
+
+                            <form method="GET" action="/products" id="filterForm">
+                                <div class="filter-section">
+                                    <label class="filter-label">Search</label>
+                                    <input type="text" class="form-control" name="search" placeholder="Search products..." value="<%= filters.search %>">
+                                </div>
+
+                                <div class="filter-section">
+                                    <label class="filter-label">Category</label>
+                                    <select class="form-select" name="category">
+                                    <option value="all" <%= filters.category === 'all' ? 'selected' : '' %>>All Categories</option>
+                                    <% for (var i = 0; i < (categories || []).length; i++) { var cat = categories[i]; %>
+                                        <option value="<%= cat %>" <%= filters.category === cat ? 'selected' : '' %>><%= cat %></option>
+                                    <% } %>
+                                </select>
+                                </div>
+
+                                <div class="filter-section">
+                                    <label class="filter-label">Price Range</label>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" name="minPrice" placeholder="Min" value="<%= filters.minPrice %>" min="0" step="0.01">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" name="maxPrice" placeholder="Max" value="<%= filters.maxPrice %>" min="0" step="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="page" value="1">
+                                <input type="hidden" name="limit" value="<%= limit %>">
+
+                                <button type="submit" class="btn btn-primary w-100 mb-2">
+                                <i class="fas fa-search me-2"></i>Apply Filters
+                            </button>
+                                <a href="/products" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-redo me-2"></i>Reset
+                                </a>
+                            </form>
+                        </div>
+
+                        <div class="results-summary mt-3">
+                            <p class="mb-0">
+                                <strong><%= totalProducts %></strong> product
+                                <%= totalProducts !== 1 ? 's' : '' %> found
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9">
+                        <div class="page-header mb-4">
+                            <h1 class="page-title">Our Products</h1>
+                            <p class="text-muted">Browse our wide selection of products</p>
+                        </div>
+
+                        <% if (products.length > 0) { %>
+                            <div class="row g-4">
+                                <% for (var j = 0; j < products.length; j++) { var product = products[j]; %>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="product-card">
+                                            <div class="product-image-container">
+                                                <img src="<%= product.image %>" alt="<%= product.name %>" class="product-image" onerror="this.src='/images/placeholder.jpg'">
+                                                <% if (product.featured) { %>
+                                                    <span class="badge-featured">Featured</span>
+                                                    <% } %>
+                                                        <% if (product.stock === 0) { %>
+                                                            <span class="badge-out-of-stock">Out of Stock</span>
+                                                            <% } %>
+                                            </div>
+                                            <div class="product-body">
+                                                <div class="product-category">
+                                                    <%= product.category %>
+                                                </div>
+                                                <h5 class="product-name">
+                                                    <%= product.name %>
+                                                </h5>
+                                                <p class="product-description">
+                                                    <%= product.description.substring(0, 100) %>...</p>
+
+                                                <div class="product-rating mb-2">
+                                                    <% for(let i = 0; i < 5; i++) { %>
+                                                        <% if (i < Math.floor(product.rating)) { %>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <% } else if (i < product.rating) { %>
+                                                                <i class="fas fa-star-half-alt text-warning"></i>
+                                                                <% } else { %>
+                                                                    <i class="far fa-star text-muted"></i>
+                                                                    <% } %>
+                                                                        <% } %>
+                                                                            <span class="rating-text">(<%= product.reviews %> reviews)</span>
+                                                </div>
+
+                                                <div class="product-footer">
+                                                    <div class="product-price">$
+                                                        <%= product.price.toFixed(2) %>
+                                                    </div>
+                                                    <form action="/cart/add" method="POST" style="display: inline;">
+                                                        <input type="hidden" name="productId" value="<%= product._id %>">
+                                                        <input type="hidden" name="quantity" value="1">
+                                                        <button type="submit" class="btn btn-primary btn-sm" <% if (product.stock===0 ) { %>disabled<% } %>>
+                                                        <i class="fas fa-shopping-cart me-1"></i>
+                                                        <%= product.stock === 0 ? 'Out of Stock' : 'Add to Cart' %>
+                                                    </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                            </div>
+
+                            <% if (totalPages > 1) { %>
+                                <nav aria-label="Products pagination" class="mt-5">
+                                    <ul class="pagination justify-content-center">
+                                        <% if (currentPage > 1) { %>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %><%= filters.category !== 'all' ? '&category=' + filters.category : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.search ? '&search=' + filters.search : '' %>">
+                                                    <i class="fas fa-chevron-left"></i> Previous
+                                                </a>
+                                            </li>
+                                            <% } else { %>
+                                                <li class="page-item disabled">
+                                                    <span class="page-link"><i class="fas fa-chevron-left"></i> Previous</span>
+                                                </li>
+                                                <% } %>
+
+                                                    <% 
+                                        let startPage = Math.max(1, currentPage - 2);
+                                        let endPage = Math.min(totalPages, currentPage + 2);
+                                    %>
+
+                                                        <% if (startPage > 1) { %>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="?page=1&limit=<%= limit %><%= filters.category !== 'all' ? '&category=' + filters.category : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.search ? '&search=' + filters.search : '' %>">1</a>
+                                                            </li>
+                                                            <% if (startPage > 2) { %>
+                                                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                                <% } %>
+                                                                    <% } %>
+
+                                                                        <% for(let i = startPage; i <= endPage; i++) { %>
+                                                                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                                                                <a class="page-link" href="?page=<%= i %>&limit=<%= limit %><%= filters.category !== 'all' ? '&category=' + filters.category : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.search ? '&search=' + filters.search : '' %>">
+                                                                                    <%= i %>
+                                                                                </a>
+                                                                            </li>
+                                                                            <% } %>
+
+                                                                                <% if (endPage < totalPages) { %>
+                                                                                    <% if (endPage < totalPages - 1) { %>
+                                                                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                                                        <% } %>
+                                                                                            <li class="page-item">
+                                                                                                <a class="page-link" href="?page=<%= totalPages %>&limit=<%= limit %><%= filters.category !== 'all' ? '&category=' + filters.category : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.search ? '&search=' + filters.search : '' %>">
+                                                                                                    <%= totalPages %>
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <% } %>
+
+                                                                                                <% if (currentPage < totalPages) { %>
+                                                                                                    <li class="page-item">
+                                                                                                        <a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= limit %><%= filters.category !== 'all' ? '&category=' + filters.category : '' %><%= filters.minPrice ? '&minPrice=' + filters.minPrice : '' %><%= filters.maxPrice ? '&maxPrice=' + filters.maxPrice : '' %><%= filters.search ? '&search=' + filters.search : '' %>">
+                                                Next <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                                                                                    </li>
+                                                                                                    <% } else { %>
+                                                                                                        <li class="page-item disabled">
+                                                                                                            <span class="page-link">Next <i class="fas fa-chevron-right"></i></span>
+                                                                                                        </li>
+                                                                                                        <% } %>
+                                    </ul>
+                                </nav>
+                                <% } %>
+                                    <% } else { %>
+                                        <div class="no-products text-center">
+                                            <i class="fas fa-box-open fa-4x mb-3 text-muted"></i>
+                                            <h3>No products found</h3>
+                                            <p class="text-muted">Try adjusting your filters or search terms.</p>
+                                            <a href="/products" class="btn btn-primary">View All Products</a>
+                                        </div>
+                                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('partials/footer') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="/js/main.js"></script>
+</body>
+
+</html>

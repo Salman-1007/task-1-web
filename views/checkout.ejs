@@ -1,0 +1,248 @@
+<%- include('partials/header') %>
+    <div class="container-fluid bg-light py-4">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/cart">Cart</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="checkout-container">
+        <div class="progress-bar-container">
+            <div class="checkout-progress">
+                <div class="progress-step">
+                    <div class="step-circle completed">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="step-label">Cart</span>
+                    <div class="progress-line completed"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle active">2</div>
+                    <span class="step-label">Checkout</span>
+                    <div class="progress-line"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Payment</span>
+                    <div class="progress-line"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="guest-checkout">
+            <h5 class="mb-1"><i class="fas fa-user-clock me-2"></i> Checkout as Guest</h5>
+            <p class="text-muted mb-0">No account needed! Complete your purchase quickly and securely.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="checkout-card">
+                    <div class="card-header">
+                        <i class="fas fa-shipping-fast me-2"></i> Shipping Information
+                    </div>
+                    <div class="card-body">
+                        <form id="checkoutForm" action="/cart/checkout" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full Name" required>
+                                        <label for="fullName">Full Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+                                        <label for="phone">Phone Number *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                        <label for="address">Street Address *</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                        <label for="city">City *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                                <label for="email">Email Address</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" id="notes" name="notes" placeholder="Delivery Notes" style="height: 100px"></textarea>
+                                <label for="notes">Delivery Notes (Optional)</label>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="checkout-card">
+                    <div class="card-header">
+                        <i class="fas fa-credit-card me-2"></i> Payment Method
+                    </div>
+                    <div class="card-body">
+                        <div class="payment-option selected" onclick="selectPayment(this, 'cod')">
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-3" type="radio" name="payment" id="cod" value="cod" checked>
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="cod">
+                                        Cash on Delivery
+                                    </label>
+                                    <div class="text-muted small">Pay when your order arrives</div>
+                                </div>
+                                <i class="fas fa-money-bill-wave text-success fs-4"></i>
+                            </div>
+                        </div>
+
+                        <div class="payment-option" onclick="selectPayment(this, 'card')">
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-3" type="radio" name="payment" id="card" value="card">
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="card">
+                                        Credit/Debit Card
+                                    </label>
+                                    <div class="text-muted small">Secure online payment</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <i class="fab fa-cc-visa text-primary fs-4"></i>
+                                    <i class="fab fa-cc-mastercard text-warning fs-4"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-option" onclick="selectPayment(this, 'wallet')">
+                            <div class="d-flex align-items-center">
+                                <input class="form-check-input me-3" type="radio" name="payment" id="wallet" value="wallet">
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="wallet">
+                                        Digital Wallet
+                                    </label>
+                                    <div class="text-muted small">JazzCash, EasyPaisa, PayPal</div>
+                                </div>
+                                <div class="payment-icons">
+                                    <i class="fab fa-paypal text-primary fs-4"></i>
+                                    <i class="fas fa-mobile-alt text-success fs-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-4" form="checkoutForm">
+                    <i class="fas fa-lock me-2"></i> Place Secure Order
+                </button>
+                </form>
+
+                <div id="cardDetails" style="display: none; margin-top: 1.5rem;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number">
+                                <label for="cardNumber">Card Number</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="cardName" name="cardName" placeholder="Cardholder Name">
+                                <label for="cardName">Cardholder Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="expiry" name="expiry" placeholder="MM/YY">
+                                <label for="expiry">MM/YY</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV">
+                                <label for="cvv">CVV</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="order-summary">
+            <div class="checkout-card">
+                <div class="card-header">
+                    <i class="fas fa-receipt me-2"></i> Order Summary
+                </div>
+                <div class="card-body">
+                    <div class="summary-item">
+                        <span>Items (3)</span>
+                        <span id="subtotal">Rs. 4,500</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Shipping</span>
+                        <span id="shipping">Rs. 150</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tax</span>
+                        <span id="tax">Rs. 45</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Discount</span>
+                        <span id="discount" class="text-success">-Rs. 200</span>
+                    </div>
+                    <div class="summary-item mt-3">
+                        <span class="fw-bold">Total</span>
+                        <span class="fw-bold text-primary" id="total">Rs. 4,495</span>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-4" type="submit" form="checkoutForm">
+                            <i class="fas fa-lock me-2"></i> Place Secure Order
+                        </button>
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <i class="fas fa-shield-alt"></i> Secure
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-truck"></i> Fast Delivery
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-undo"></i> Easy Returns
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                                <i class="fas fa-lock me-1"></i>
+                                Your information is secure and encrypted
+                            </small>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-card mt-4">
+                <div class="card-header">
+                    <i class="fas fa-tag me-2"></i> Promo Code
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter promo code" id="promoCode">
+                        <button class="btn btn-primary" onclick="applyPromo()">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>

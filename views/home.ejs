@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Home' %></title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <!-- All your content -->
+    <img src="/images/baba1.jpg" alt="Image 1">
+    <img src="/images/becongress.png" alt="Image 2">
+    <img src="/images/pollinuk.png" alt="Image 3">
+    <img src="/images/comma.png" alt="Image 4">
+    <img src="/images/baba2.jpg" alt="Image 5">
+    <img src="/images/buynow.jpeg" alt="Image 6">
+    <img src="/images/home_congress_post1-576x336.jpg" alt="Image 7">
+    <img src="/images/hc2.jpg" alt="Image 8">
+    <img src="/images/hc3.jpg" alt="Image 9">
+    <img src="/images/h4.jpg" alt="Image 10">
+
+    <div class="center-text">
+        <p>Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit.</p>
+    </div>
+
+    <!-- Rest of your positioned divs -->
+    <div style="position:absolute; top:100%; left:15%; background-color:rgba(255,255,255,0.7); text-align:center; max-width:50%; font-size:30px;">
+        <p>Latest stories and Reports.</p>
+    </div>
+
+    <div style="position:absolute; top:130%; left:15%; background-color:rgba(255,255,255,0.7); text-align:center; max-width:50%; font-size:18px;">
+        <p style="font-size:x-small;">may 4</p>
+        <p>proin dui s vivamus sit amet.</p>
+    </div>
+
+    <div style="position:absolute; top:130%; left:35%; background-color:rgba(255,255,255,0.7); text-align:center; max-width:50%; font-size:18px;">
+        <p style="font-size:x-small;">may 4</p>
+        <p>isque lorem.</p>
+    </div>
+
+    <div style="position:absolute; top:130%; left:55%; background-color:rgba(255,255,255,0.7); text-align:center; max-width:50%; font-size:18px;">
+        <p style="font-size:x-small;">may 4</p>
+        <p>Quisque lorem totro.</p>
+    </div>
+
+    <div style="position:absolute; top:130%; left:75%; background-color:rgba(255,255,255,0.7); text-align:center; max-width:50%; font-size:18px;">
+        <p style="font-size:x-small;">may 4</p>
+        <p>Quisque lorem totro vivamus sit amet.</p>
+    </div>
+
+    <div style="position:relative;width:25%;top:150%;left:15%;font-size:35px;">
+        <p style="font-weight:lighter;">Tempus</p>
+    </div>
+
+    <div style="position:relative;width:20%;top:150%;left:15%;">
+        <p style="font-weight:bold;">Fusce nonummy lacinia at, viverra et, porttitor odio. Suspen disse ut nunc tempus ornare bibendum dui. Morbi quis mauris. Nunc accumsan orci. Sed in enim. Sed placerat. Vivamus tincidunt vehicula dui imperdiet dignissim.</p>
+        <p style="font-size:18px;opacity:60%;">Fusce nonummy lacinia at, viverra et, porttitor odio. Suspen disse ut nunc tempus ornare bibendum dui.</p>
+    </div>
+
+    <div style="position:relative;width:20%;top:120%;left:40%;">
+        <p style="font-weight:bold;">Lorem ipsum dolor sit amet nunc metus feugiat tortor et quam quis mauris</p>
+        <p style="font-size:18px;opacity:60%;">Fusce nonummy lacinia at, viverra et, porttitor odio. Suspen disse ut nunc tempus ornare bibendum dui.</p>
+    </div>
+
+    <div style="padding:auto;max-width:25%;position:relative;top:85%;left:70%;background-color:#eeeeee;padding:30px;box-sizing:inherit;">
+        <p style="font-size:large;text-align:center;">LIST OF MEMBERS</p>
+        <img src="/images/home_congress_members.jpg" style="left:15%; top:20%; padding:10px; width:70%; height:35%;" />
+        <p style="margin-top:50%; margin-left:35%; font-size:medium;">Mit samet et omnia vanitas</p>
+        <ul>
+            <li>Proin gavida</li>
+            <li>Nibh vel</li>
+            <li>Velit Auctor</li>
+            <li>Auliqut Aenean</li>
+            <li>solici Tudin</li>
+            <li>Quis Bibunden</li>
+            <li>Auctor nisi</li>
+        </ul>
+    </div>
+
+    <div style="padding:auto;width:35%;height:30%;position:relative;top:105%;left:5%;background-color:#eeeeee;padding:30px;box-sizing:inherit;">
+        <img src="/images/home_congress_book.jpg" style="width:100%; height:100%;">
+    </div>
+
+    <div style="position:relative;top:70%;left:50%;max-width:45%;height:auto">
+        <p style="font-size:40px;">Take a look at our book</p>
+        <p style="font-size:18px;">Maecenas ac pellentesque felis. Integer elementum nisi dolor, ut tristique quam fringilla vel.</p>
+    </div>
+
+    <!-- Customer Testimonials Section -->
+    <div style="position:relative; top:130%; left:10%; width:80%; background-color:rgba(255,255,255,0.8); text-align:center; padding:40px; box-sizing:border-box; border-radius:12px; overflow:hidden;">
+        <h2 style="font-size:40px; margin-bottom:30px;">Customer Testimonials</h2>
+
+        <div id="testimonialCarousel" style="position:relative; width:100%; height:300px;">
+            <div class="testimonial-slide" style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:50%; background:9b7f7f; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.15); padding:25px; opacity:1; transition:opacity 1s;">
+                <h4 style="margin:10px 0 5px 0;">Sarah Ahmed</h4>
+                <div style="color:gold; font-size:18px;">⭐⭐⭐⭐⭐</div>
+                <p style="font-size:15px; opacity:0.8;">"Amazing quality and fast delivery! I'll definitely order again."</p>
+            </div>
+
+            <div class="testimonial-slide" style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:50%; background:9b7f7f; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.15); padding:25px; opacity:0; transition:opacity 1s;">
+                <h4 style="margin:10px 0 5px 0;">Ali Khan</h4>
+                <div style="color:gold; font-size:18px;">⭐⭐⭐⭐</div>
+                <p style="font-size:15px; opacity:0.8;">"Good service and packaging. Totally worth it!"</p>
+            </div>
+
+            <div class="testimonial-slide" style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:50%; background:9b7f7f; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.15); padding:25px; opacity:0; transition:opacity 1s;">
+                <h4 style="margin:10px 0 5px 0;">Hina Malik</h4>
+                <div style="color:gold; font-size:18px;">⭐⭐⭐⭐⭐</div>
+                <p style="font-size:15px; opacity:0.8;">"Loved the product quality! Highly recommend this store."</p>
+            </div>
+
+            <div class="testimonial-slide" style="position:absolute; top:0; left:50%; transform:translateX(-50%); width:50%; background:9b7f7f; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.15); padding:25px; opacity:0; transition:opacity 1s;">
+                <h4 style="margin:10px 0 5px 0;">Usman Ali</h4>
+                <div style="color:gold; font-size:18px;">⭐⭐⭐⭐⭐</div>
+                <p style="font-size:15px; opacity:0.8;">"Great experience overall, customer support was helpful too."</p>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

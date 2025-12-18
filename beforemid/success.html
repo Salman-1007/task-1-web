@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary-color: #4CAF50;
+            /* A pleasant green for success */
+            --primary-hover: #45a049;
+            --background-color: #f4f7f9;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --secondary-text-color: #666666;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .success-box {
+            background-color: var(--card-background);
+            width: 450px;
+            max-width: 90%;
+            padding: 50px 30px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .success-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .icon {
+            font-size: 6rem;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            animation: fadeInScale 0.8s ease-out;
+        }
+        
+        .success-box h1 {
+            color: var(--text-color);
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .success-box p {
+            color: var(--secondary-text-color);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0 0 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .success-box {
+                padding: 40px 20px;
+            }
+            .success-box h1 {
+                font-size: 1.8rem;
+            }
+            .icon {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="success-box">
+        <div class="icon">
+            ✓
+        </div>
+        <h1>Order Placed!</h1>
+        <p>Thank you for shopping with us. Your order has been successfully placed and is now being processed.</p>
+        <a href="index.html" class="btn">Continue Shopping</a>
+    </div>
+
+</body>
+
+</html>
