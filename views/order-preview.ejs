@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/header') %>
+        <link rel="stylesheet" href="/css/orderpreview.css">
+        <style>
+            .preview-wrapper {
+                max-width: 900px;
+                margin: 40px auto;
+            }
+            
+            .preview-card {
+                background: #ffffff;
+                top: 20%;
+                border-radius: 20px;
+                box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+                padding: 24px 28px;
+            }
+            
+            .preview-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            
+            .badge-soft {
+                padding: 4px 12px;
+                border-radius: 999px;
+                font-size: 0.75rem;
+                background: #eff6ff;
+                color: #1d4ed8;
+                font-weight: 600;
+            }
+            
+            .table-preview th {
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                color: #6b7280;
+            }
+            
+            .totals-box {
+                background: #f9fafb;
+                border-radius: 16px;
+                padding: 16px 18px;
+            }
+            
+            .totals-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 4px;
+                font-size: 0.9rem;
+            }
+            
+            .totals-row.total {
+                font-weight: 700;
+                font-size: 1.05rem;
+            }
+            
+            .totals-row.discount {
+                color: #16a34a;
+            }
+            
+            .coupon-form input {
+                border-radius: 999px;
+            }
+            
+            .btn-rounded {
+                border-radius: 999px;
+            }
+        </style>
+</head>
+
+<body>
+    <div class="preview-wrapper">
+        <div class="preview-card">
+            <div class="preview-header">
+                <div>
+                    <h3 class="mb-1">Order Preview</h3>
+                    <span class="badge-soft">Step 2 &mdash; Review &amp; confirm</span>
+                </div>
+                <a href="/cart" class="btn btn-outline-secondary btn-sm btn-rounded">
+                    &larr; Go Back to Cart
+                </a>
+            </div>
+
+            <% if (cartItems && cartItems.length) { %>
+                <div class="table-responsive mb-3">
+                    <table class="table table-borderless align-middle table-preview">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-end">Price</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% cartItems.forEach(item => { %>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <% if (item.image) { %>
+                                                <img src="<%= item.image %>" alt="<%= item.name %>" class="me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 12px;">
+                                                <% } %>
+                                                    <span class="fw-semibold"><%= item.name %></span>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">Rs.
+                                        <%= Number(item.price).toFixed(2) %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= item.quantity %>
+                                    </td>
+                                    <td class="text-end">Rs.
+                                        <%= Number(item.lineTotal).toFixed(2) %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h6 class="mb-2">Coupon / Discount</h6>
+                        <form class="row g-2 coupon-form" method="get" action="/order/preview">
+                            <div class="col-8">
+                                <input type="text" name="coupon" value="<%= coupon || '' %>" class="form-control form-control-sm" placeholder="Enter coupon code (SAVE10)">
+                            </div>
+                            <div class="col-4 d-grid">
+                                <button type="submit" class="btn btn-sm btn-dark btn-rounded">Apply</button>
+                            </div>
+                        </form>
+                        <% if (couponApplied) { %>
+                            <p class="text-success small mt-2 mb-0">
+                                10% discount applied with coupon <strong><%= coupon %></strong>.
+                            </p>
+                            <% } else if (coupon && !couponApplied) { %>
+                                <p class="text-danger small mt-2 mb-0">
+                                    Coupon "
+                                    <%= coupon %>" is not valid.
+                                </p>
+                                <% } %>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="totals-box">
+                            <div class="totals-row">
+                                <span>Subtotal</span>
+                                <span>Rs. <%= Number(subtotal).toFixed(2) %></span>
+                            </div>
+                            <div class="totals-row">
+                                <span>Shipping</span>
+                                <span>Rs. <%= Number(shipping).toFixed(2) %></span>
+                            </div>
+                            <div class="totals-row">
+                                <span>Tax</span>
+                                <span>Rs. <%= Number(tax).toFixed(2) %></span>
+                            </div>
+                            <% if (discountAmount && Number(discountAmount) > 0) { %>
+                                <div class="totals-row discount">
+                                    <span>Discount (10%)</span>
+                                    <span>- Rs. <%= Number(discountAmount).toFixed(2) %></span>
+                                </div>
+                                <% } %>
+                                    <hr class="my-2">
+                                    <div class="totals-row total">
+                                        <span>Grand Total</span>
+                                        <span>Rs. <%= Number(totalAfterDiscount || total).toFixed(2) %></span>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a href="/cart" class="btn btn-outline-secondary btn-rounded">
+                    &larr; Go Back to Cart
+                </a>
+                    <form method="post" action="/order/confirm" class="d-inline">
+                        <input type="hidden" name="coupon" value="<%= coupon || '' %>">
+                        <button type="submit" class="btn btn-dark btn-rounded">
+                        Confirm Order
+                    </button>
+                    </form>
+                </div>
+                <% } else { %>
+                    <p>Your cart is empty. <a href="/products">Browse products</a></p>
+                    <% } %>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+</body>
+
+</html>

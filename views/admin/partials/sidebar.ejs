@@ -12,6 +12,9 @@
         <a href="/admin/products/new" class="nav-item <%= typeof page !== 'undefined' && (page === 'add-product' || page === 'edit-product') ? 'active' : '' %>">
             <i class="fas fa-plus-circle me-2"></i>Add Product
         </a>
+        <a href="/admin/orders" class="nav-item <%= typeof page !== 'undefined' && page === 'orders' ? 'active' : '' %>">
+            <i class="fas fa-receipt me-2"></i>Orders
+        </a>
         <a href="/" class="nav-item">
             <i class="fas fa-home me-2"></i>Back to Site
         </a>

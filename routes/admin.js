@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
-const { isAdmin } = require('../middleware/auth');
+const adminOrdersRouter = require('./adminOrders');
+const {
+    isAdmin
+} = require('../middleware/auth');
 
 // Protect all admin routes with isAdmin middleware
 router.use(isAdmin);
@@ -13,21 +16,41 @@ router.get('/', async(req, res) => {
         const totalStock = await Product.aggregate([{
             $group: {
                 _id: null,
-                total: { $sum: '$stock' }
+                total: {
+                    $sum: '$stock'
+                }
             }
         }]);
-        const lowStockProducts = await Product.countDocuments({ stock: { $lt: 10 } });
-        const featuredProducts = await Product.countDocuments({ featured: true });
+        const lowStockProducts = await Product.countDocuments({
+            stock: {
+                $lt: 10
+            }
+        });
+        const featuredProducts = await Product.countDocuments({
+            featured: true
+        });
 
         // Products by category
-        const productsByCategory = await Product.aggregate([
-            { $group: { _id: '$category', count: { $sum: 1 } } },
-            { $sort: { count: -1 } }
+        const productsByCategory = await Product.aggregate([{
+                $group: {
+                    _id: '$category',
+                    count: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $sort: {
+                    count: -1
+                }
+            }
         ]);
 
         // Recent products
         const recentProducts = await Product.find()
-            .sort({ createdAt: -1 })
+            .sort({
+                createdAt: -1
+            })
             .limit(5)
             .select('name price stock createdAt');
 
@@ -62,9 +85,18 @@ router.get('/products', async(req, res) => {
 
         const filter = {};
         if (req.query.search) {
-            filter.$or = [
-                { name: { $regex: req.query.search, $options: 'i' } },
-                { description: { $regex: req.query.search, $options: 'i' } }
+            filter.$or = [{
+                    name: {
+                        $regex: req.query.search,
+                        $options: 'i'
+                    }
+                },
+                {
+                    description: {
+                        $regex: req.query.search,
+                        $options: 'i'
+                    }
+                }
             ];
         }
         if (req.query.category && req.query.category !== 'all') {
@@ -75,7 +107,9 @@ router.get('/products', async(req, res) => {
         const totalPages = Math.ceil(totalProducts / limit);
 
         const products = await Product.find(filter)
-            .sort({ createdAt: -1 })
+            .sort({
+                createdAt: -1
+            })
             .skip(skip)
             .limit(limit);
 
@@ -230,5 +264,8 @@ router.post('/products/:id/delete', async(req, res) => {
         });
     }
 });
+
+// Admin Order Management (status lifecycle)
+router.use('/orders', adminOrdersRouter);
 
 module.exports = router;

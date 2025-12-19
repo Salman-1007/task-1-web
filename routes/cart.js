@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const { buildOrderSummary } = require('./orderSummary');
 
 // 1. VIEW CART
 router.get('/', (req, res) => {
@@ -60,7 +61,7 @@ router.get('/checkout', (req, res) => {
     });
 });
 
-// 3. PROCESS CHECKOUT (LINKED TO USER)
+// 3. PROCESS CHECKOUT (STORE DATA, THEN REDIRECT TO ORDER PREVIEW)
 router.post('/checkout', async(req, res) => {
     try {
         if (!req.session.cart || Object.keys(req.session.cart).length === 0) {
@@ -73,46 +74,24 @@ router.post('/checkout', async(req, res) => {
 
         const { fullName, phone, address, city, email, notes, payment } = req.body;
 
-        let subtotal = 0;
-        const items = [];
+        // Build a reusable order summary from the current cart
+        const summary = buildOrderSummary(req.session.cart || {});
 
-        for (const [id, item] of Object.entries(req.session.cart)) {
-            subtotal += item.price * item.quantity;
-            items.push({
-                productId: id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-                image: item.image
-            });
-        }
-
-        const shipping = subtotal > 5000 ? 0 : 150;
-        const tax = Math.round(subtotal * 0.05);
-        const finalTotal = subtotal + shipping + tax;
-
-        const order = new Order({
-            orderNumber: 'ORD-' + Date.now(),
-            userId: req.session.user._id,
-            customerName: fullName || req.session.user.name,
-            email: email || req.session.user.email,
+        // Persist checkout form data and summary in the session for the preview step
+        req.session.checkoutForm = {
+            fullName,
             phone,
             address,
             city,
-            items,
-            total: finalTotal,
-            paymentMethod: payment || 'cod',
-            notes: notes || '',
-            status: 'pending'
-        });
-
-        const savedOrder = await order.save();
-
-        req.session.lastOrder = savedOrder;
-        req.session.cart = {};
+            email,
+            notes,
+            payment
+        };
+        req.session.orderSummary = summary;
 
         req.session.save(() => {
-            res.redirect('/success');
+            // Redirect to the new Order Preview step
+            res.redirect('/order/preview');
         });
 
     } catch (error) {

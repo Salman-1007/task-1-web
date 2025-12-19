@@ -1,0 +1,397 @@
+.preview-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+
+/* Preview Card */
+
+.preview-card {
+    top: 20%;
+    background: #db9696;
+    border-radius: 20px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    padding: 32px;
+    transition: box-shadow 0.3s ease;
+}
+
+.preview-card:hover {
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+}
+
+
+/* Header Section */
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.preview-header h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+
+/* Badge Styles */
+
+.badge-soft {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: #1d4ed8;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.badge-soft:hover {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    transform: translateY(-1px);
+}
+
+
+/* Table Styles */
+
+.table-preview {
+    margin-bottom: 0;
+}
+
+.table-preview thead th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #64748b;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 16px 12px;
+    border-bottom: 2px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.table-preview tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.2s ease;
+}
+
+.table-preview tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.table-preview tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-preview tbody td {
+    padding: 18px 12px;
+    color: #334155;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.table-preview .fw-semibold {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+
+/* Product Image in Table */
+
+.table-preview img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.table-preview img:hover {
+    transform: scale(1.1);
+}
+
+
+/* Coupon Section */
+
+.coupon-form {
+    margin-bottom: 8px;
+}
+
+.coupon-form input {
+    border-radius: 999px;
+    border: 2px solid #e2e8f0;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.coupon-form input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.coupon-form input::placeholder {
+    color: #94a3b8;
+}
+
+.coupon-form h6 {
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.coupon-form .text-success {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.coupon-form .text-danger {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+
+/* Totals Box */
+
+.totals-box {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 16px;
+    padding: 20px 22px;
+    border: 1px solid #e5e7eb;
+}
+
+.totals-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+.totals-row:last-child {
+    margin-bottom: 0;
+}
+
+.totals-row span:first-child {
+    font-weight: 500;
+}
+
+.totals-row span:last-child {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.totals-row.discount {
+    color: #16a34a;
+}
+
+.totals-row.discount span {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.totals-box hr {
+    border: none;
+    border-top: 2px solid #e5e7eb;
+    margin: 16px 0;
+}
+
+.totals-row.total {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #1e293b;
+    padding-top: 8px;
+}
+
+.totals-row.total span {
+    color: #1e293b;
+}
+
+.totals-row.total span:last-child {
+    color: #3b82f6;
+    font-size: 1.25rem;
+}
+
+
+/* Button Styles */
+
+.btn-rounded {
+    border-radius: 999px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary {
+    border: 2px solid #e2e8f0;
+    color: #64748b;
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #475569;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-dark {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.4);
+}
+
+.btn-dark:hover {
+    background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.5);
+}
+
+.btn-dark:active {
+    transform: translateY(0);
+}
+
+.btn-sm {
+    padding: 8px 18px;
+    font-size: 0.875rem;
+}
+
+
+/* Empty Cart Message */
+
+.preview-card>p {
+    text-align: center;
+    padding: 40px 20px;
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.preview-card>p a {
+    color: #3b82f6;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.preview-card>p a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+
+/* Footer Actions */
+
+.d-flex.justify-content-between.mt-4 {
+    padding-top: 24px;
+    border-top: 2px solid #f1f5f9;
+    margin-top: 32px !important;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .preview-wrapper {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    .preview-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+    }
+    .preview-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .preview-header h3 {
+        font-size: 1.5rem;
+    }
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .table-preview {
+        font-size: 0.85rem;
+    }
+    .table-preview thead th {
+        font-size: 0.75rem;
+        padding: 12px 8px;
+    }
+    .table-preview tbody td {
+        padding: 14px 8px;
+    }
+    .table-preview img {
+        width: 40px;
+        height: 40px;
+    }
+    .totals-box {
+        margin-top: 20px;
+    }
+    .d-flex.justify-content-between.mt-4 {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .d-flex.justify-content-between.mt-4 .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .preview-card {
+        padding: 20px 16px;
+    }
+    .preview-header h3 {
+        font-size: 1.35rem;
+    }
+    .badge-soft {
+        font-size: 0.7rem;
+        padding: 5px 12px;
+    }
+    .coupon-form .col-8,
+    .coupon-form .col-4 {
+        width: 100%;
+        max-width: 100%;
+    }
+    .coupon-form .col-4 {
+        margin-top: 8px;
+    }
+    .totals-row {
+        font-size: 0.9rem;
+    }
+    .totals-row.total {
+        font-size: 1.05rem;
+    }
+    .totals-row.total span:last-child {
+        font-size: 1.15rem;
+    }
+}
+
+
+/* Print Styles */
+
+@media print {
+    .preview-card {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+    }
+    .btn,
+    .coupon-form {
+        display: none;
+    }
+}

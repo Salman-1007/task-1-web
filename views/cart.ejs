@@ -8,17 +8,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-         :root {
+        :root {
             --primary-blue: #2563eb;
             --bg-gray: #f8fafc;
         }
-        
+
         body {
             background-color: var(--bg-gray);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
+
         /* Hero Header */
-        
+
         .cart-header-section {
             background: rgb(241, 182, 182);
             top: 20%;
@@ -28,33 +29,34 @@
             justify-content: center;
             text-align: center;
         }
+
         /* Cart Card Style */
-        
+
         .premium-card {
             background: rgb(251, 219, 219);
-            position: relative;
             border: none;
-            left: 27%;
             border-radius: 20px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             overflow: hidden;
+            margin: 0 auto;
         }
-        
+
         .cart-item {
             padding: 2rem;
             border-bottom: 1px solid #f1f5f9;
             transition: background 0.2s;
         }
-        
+
         .cart-item:hover {
             background-color: #fafafa;
         }
-        
+
         .cart-item:last-child {
             border-bottom: none;
         }
+
         /* Enhanced Images */
-        
+
         .product-img-container {
             width: 100px;
             height: 100px;
@@ -62,14 +64,15 @@
             overflow: hidden;
             background: #f1f5f9;
         }
-        
+
         .product-img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         /* Quantity Controls */
-        
+
         .qty-box {
             display: flex;
             align-items: center;
@@ -78,7 +81,7 @@
             padding: 4px;
             width: fit-content;
         }
-        
+
         .qty-btn {
             width: 32px;
             height: 32px;
@@ -91,12 +94,12 @@
             transition: 0.2s;
             color: #475569;
         }
-        
+
         .qty-btn:hover {
             background: var(--primary-blue);
             color: white;
         }
-        
+
         .qty-input {
             width: 45px;
             text-align: center;
@@ -105,26 +108,25 @@
             font-weight: 600;
             color: #1e293b;
         }
-        /* Sticky Sidebar */
-        
-        .summary-sidebar {
-            position: sticky;
-            top: 2rem;
+
+        /* Summary box */
+        .summary-card {
+            margin-top: 2rem;
         }
-        
+
         .summary-item {
             display: flex;
             justify-content: space-between;
             margin-bottom: 1rem;
             color: #64748b;
         }
-        
+
         .total-price {
             font-size: 1.5rem;
             font-weight: 800;
             color: var(--primary-blue);
         }
-        
+
         .checkout-btn {
             background: #0f172a;
             color: white;
@@ -135,17 +137,17 @@
             width: 100%;
             transition: 0.3s;
         }
-        
+
         .checkout-btn:hover {
             background: #334155;
             transform: translateY(-2px);
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 5rem 2rem;
         }
-        
+
         .empty-state i {
             font-size: 5rem;
             color: #cbd5e1;
@@ -157,122 +159,122 @@
 <body>
     <%- include('partials/header') %>
 
-        <div class="cart-header-section">
-            <div class="container">
-                <!-- <h1 class="fw-bold h2 mb-0">Your Shopping Bag</h1> -->
-                <!-- <p class="text-muted small">Items are saved in your session</p> -->
-            </div>
+    <div class="cart-header-section">
+        <div class="container">
+            <!-- <h1 class="fw-bold h2 mb-0">Your Shopping Bag</h1> -->
+            <!-- <p class="text-muted small">Items are saved in your session</p> -->
         </div>
+    </div>
 
-        <div class="container py-5">
-            <div class="row g-4">
-                <div class="col-lg-8">
-                    <div class="premium-card">
-                        <% if (cartItems && cartItems.length > 0) { %>
-                            <% cartItems.forEach(item => { %>
-                                <div class="cart-item">
-                                    <div class="row align-items-center g-3">
-                                        <div class="col-auto">
-                                            <div class="product-img-container shadow-sm">
-                                                <img src="<%= item.image %>" alt="<%= item.name %>" onerror="this.src='/images/placeholder.jpg'">
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <h5 class="fw-bold mb-1">
-                                                <%= item.name %>
-                                            </h5>
-                                            <p class="text-primary fw-semibold mb-0">$
-                                                <%= item.price.toFixed(2) %>
-                                            </p>
-                                        </div>
-                                        <div class="col-md-auto text-center">
-                                            <label class="d-block small text-muted mb-2">Quantity</label>
-                                            <div class="qty-box mx-auto">
-                                                <form action="/cart/update/<%= item.id %>" method="POST" class="d-flex align-items-center">
-                                                    <button type="submit" name="quantity" value="<%= item.quantity - 1 %>" class="qty-btn">
-                                                    <i class="fas fa-minus small"></i>
-                                                </button>
-                                                    <input type="text" class="qty-input" value="<%= item.quantity %>" readonly>
-                                                    <button type="submit" name="quantity" value="<%= item.quantity + 1 %>" class="qty-btn">
-                                                    <i class="fas fa-plus small"></i>
-                                                </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 text-md-end">
-                                            <label class="d-block small text-muted mb-2">Subtotal</label>
-                                            <span class="fw-bold h5 text-dark">$<%= item.subtotal.toFixed(2) %></span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <form action="/cart/remove/<%= item.id %>" method="POST">
-                                                <button type="submit" class="btn btn-light text-danger rounded-circle p-2">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% }); %>
-                                    <% } else { %>
-                                        <div class="empty-state">
-                                            <i class="fas fa-cart-arrow-down"></i>
-                                            <h3 class="fw-bold">Your cart is empty</h3>
-                                            <p class="text-muted">Looks like you haven't added anything to your cart yet.</p>
-                                            <a href="/products" class="btn btn-primary px-4 py-2 mt-3 rounded-pill">
-                                Start Shopping
-                            </a>
-                                        </div>
-                                        <% } %>
-                    </div>
-                </div>
-
-                <% if (cartItems && cartItems.length > 0) { %>
-                    <div class="col-lg-4">
-                        <div class="summary-sidebar">
-                            <div class="premium-card p-4">
-                                <h4 class="fw-bold mb-4">Summary</h4>
-
-                                <div class="summary-item">
-                                    <span>Subtotal</span>
-                                    <span class="text-dark fw-bold">$<%= total %></span>
-                                </div>
-                                <div class="summary-item">
-                                    <span>Shipping</span>
-                                    <span class="text-success fw-bold">Calculated at checkout</span>
-                                </div>
-
-                                <hr class="my-4" style="border-style: dashed;">
-
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <span class="h5 fw-bold mb-0">Estimated Total</span>
-                                    <span class="total-price">$<%= total %></span>
-                                </div>
-
-                                <a href="/cart/checkout" class="checkout-btn btn text-center d-block text-decoration-none">
-                            Checkout Now <i class="fas fa-chevron-right ms-2 small"></i>
-                        </a>
-
-                                <div class="text-center mt-3">
-                                    <a href="/products" class="text-muted small text-decoration-none">
-                                        <i class="fas fa-arrow-left me-1"></i> Back to Products
-                                    </a>
+    <div class="container py-5 d-flex justify-content-center">
+        <div class="row justify-content-center w-100">
+            <div class="col-lg-8 col-md-10">
+                <!-- Cart items stacked -->
+                <div class="premium-card">
+                    <% if (cartItems && cartItems.length > 0) { %>
+                    <% cartItems.forEach(item => { %>
+                    <div class="cart-item">
+                        <div class="row align-items-center g-3">
+                            <div class="col-auto">
+                                <div class="product-img-container shadow-sm">
+                                    <img src="<%= item.image %>" alt="<%= item.name %>" onerror="this.src='/images/placeholder.jpg'">
                                 </div>
                             </div>
-
-                            <div class="mt-4 px-2">
-                                <div class="d-flex align-items-center gap-3 text-muted small">
-                                    <i class="fas fa-shield-alt fs-4"></i>
-                                    <span>Secure SSL encrypted checkout for your privacy and safety.</span>
+                            <div class="col">
+                                <h5 class="fw-bold mb-1">
+                                    <%= item.name %>
+                                </h5>
+                                <p class="text-primary fw-semibold mb-0">
+                                    $<%= item.price.toFixed(2) %>
+                                </p>
+                            </div>
+                            <div class="col-md-auto text-center">
+                                <label class="d-block small text-muted mb-2">Quantity</label>
+                                <div class="qty-box mx-auto">
+                                    <form action="/cart/update/<%= item.id %>" method="POST" class="d-flex align-items-center">
+                                        <button type="submit" name="quantity" value="<%= item.quantity - 1 %>" class="qty-btn">
+                                            <i class="fas fa-minus small"></i>
+                                        </button>
+                                        <input type="text" class="qty-input" value="<%= item.quantity %>" readonly>
+                                        <button type="submit" name="quantity" value="<%= item.quantity + 1 %>" class="qty-btn">
+                                            <i class="fas fa-plus small"></i>
+                                        </button>
+                                    </form>
                                 </div>
+                            </div>
+                            <div class="col-md-2 text-md-end">
+                                <label class="d-block small text-muted mb-2">Subtotal</label>
+                                <span class="fw-bold h5 text-dark">$<%= item.subtotal.toFixed(2) %></span>
+                            </div>
+                            <div class="col-auto">
+                                <form action="/cart/remove/<%= item.id %>" method="POST">
+                                    <button type="submit" class="btn btn-light text-danger rounded-circle p-2">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                    <% }); %>
+                    <% } else { %>
+                    <div class="empty-state">
+                        <i class="fas fa-cart-arrow-down"></i>
+                        <h3 class="fw-bold">Your cart is empty</h3>
+                        <p class="text-muted">Looks like you haven't added anything to your cart yet.</p>
+                        <a href="/products" class="btn btn-primary px-4 py-2 mt-3 rounded-pill">
+                            Start Shopping
+                        </a>
+                    </div>
                     <% } %>
+                </div>
+
+                <!-- Summary box fixed at bottom -->
+                <% if (cartItems && cartItems.length > 0) { %>
+                <div class="summary-card">
+                    <div class="premium-card p-4">
+                        <h4 class="fw-bold mb-4">Summary</h4>
+
+                        <div class="summary-item">
+                            <span>Subtotal</span>
+                            <span class="text-dark fw-bold">$<%= total %></span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Shipping</span>
+                            <span class="text-success fw-bold">Calculated at checkout</span>
+                        </div>
+
+                        <hr class="my-4" style="border-style: dashed;">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="h5 fw-bold mb-0">Estimated Total</span>
+                            <span class="total-price">$<%= total %></span>
+                        </div>
+
+                        <a href="/cart/checkout" class="checkout-btn btn text-center d-block text-decoration-none">
+                            Checkout Now <i class="fas fa-chevron-right ms-2 small"></i>
+                        </a>
+
+                        <div class="text-center mt-3">
+                            <a href="/products" class="text-muted small text-decoration-none">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Products
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 px-2">
+                        <div class="d-flex align-items-center gap-3 text-muted small">
+                            <i class="fas fa-shield-alt fs-4"></i>
+                            <span>Secure SSL encrypted checkout for your privacy and safety.</span>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
+    </div>
 
-        <%- include('partials/footer') %>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('partials/footer') %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
