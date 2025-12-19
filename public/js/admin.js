@@ -1,7 +1,8 @@
 // Admin Panel JavaScript
-
 document.addEventListener('DOMContentLoaded', function() {
+    // =======================
     // Delete Product Functionality
+    // =======================
     const deleteButtons = document.querySelectorAll('.delete-product-btn');
     const deleteModalElement = document.getElementById('deleteModal');
     let deleteModal = null;
@@ -17,14 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
             productIdToDelete = this.getAttribute('data-id');
             const productName = this.getAttribute('data-name');
             const productNameElement = document.getElementById('productName');
-            if (productNameElement) {
-                productNameElement.textContent = productName;
-            }
+            if (productNameElement) productNameElement.textContent = productName;
             deleteModal.show();
         });
     });
 
-    // Confirm Delete
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener('click', async function() {
@@ -38,38 +36,38 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const response = await fetch(`/admin/products/${productIdToDelete}/delete`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Content-Type': 'application/json' }
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
                     deleteModal.hide();
-                    // Show success message
                     showAlert('success', 'Product deleted successfully!');
-                    // Remove the row from table
-                    const row = document.querySelector(`[data-id="${productIdToDelete}"]`).closest('tr');
-                    row.style.transition = 'opacity 0.3s';
-                    row.style.opacity = '0';
-                    setTimeout(() => {
-                        row.remove();
-                        // Reload page if no products left
-                        const remainingRows = document.querySelectorAll('tbody tr').length;
-                        if (remainingRows === 0) {
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 500);
-                        }
-                    }, 300);
+
+                    // Remove the row safely
+                    const row = document.querySelector(`.delete-product-btn[data-id="${productIdToDelete}"]`).closest('tr');
+                    if (row) {
+                        row.style.transition = 'opacity 0.3s';
+                        row.style.opacity = '0';
+                        setTimeout(() => row.remove(), 300);
+                    }
+
+                    productIdToDelete = null;
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    // Reload page if no products left
+                    if (document.querySelectorAll('tbody tr').length === 0) {
+                        setTimeout(() => window.location.reload(), 500);
+                    }
                 } else {
                     showAlert('danger', data.message || 'Failed to delete product.');
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error(error);
                 showAlert('danger', 'An error occurred while deleting the product.');
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -77,34 +75,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // =======================
     // Show Alert Function
+    // =======================
     function showAlert(type, message) {
         const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-2`;
         alertDiv.setAttribute('role', 'alert');
         alertDiv.innerHTML = `
             <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-
         const container = document.querySelector('.admin-content');
         container.insertBefore(alertDiv, container.firstChild);
 
-        // Auto dismiss after 5 seconds
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 5000);
+        setTimeout(() => alertDiv.remove(), 5000);
     }
 
+    // =======================
     // Image Preview on Form
+    // =======================
     const imageInput = document.getElementById('image');
     if (imageInput) {
         imageInput.addEventListener('input', function() {
             let preview = document.querySelector('.image-preview');
-
-            // Create preview container if it doesn't exist
             if (!preview && this.value) {
-                const imageField = document.getElementById('image').closest('.col-md-6');
+                const imageField = this.closest('.col-md-6');
                 if (imageField) {
                     const previewContainer = document.createElement('div');
                     previewContainer.className = 'col-md-12 mt-3';
@@ -123,14 +119,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     preview.appendChild(img);
                 }
                 img.src = this.value;
-                img.onerror = function() {
-                    this.src = '/images/placeholder.jpg';
-                };
+                img.onerror = function() { this.src = '/images/placeholder.jpg'; };
             }
         });
     }
 
-    // Form Validation
+    // =======================
+    // Product Form Validation
+    // =======================
     const productForm = document.getElementById('productForm');
     if (productForm) {
         productForm.addEventListener('submit', function(e) {
@@ -138,23 +134,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const stock = parseInt(document.getElementById('stock').value);
             const rating = parseFloat(document.getElementById('rating').value);
 
-            if (price < 0) {
-                e.preventDefault();
-                showAlert('danger', 'Price cannot be negative.');
-                return false;
-            }
-
-            if (stock < 0) {
-                e.preventDefault();
-                showAlert('danger', 'Stock cannot be negative.');
-                return false;
-            }
-
-            if (rating < 0 || rating > 5) {
-                e.preventDefault();
-                showAlert('danger', 'Rating must be between 0 and 5.');
-                return false;
-            }
+            if (price < 0) { e.preventDefault();
+                showAlert('danger', 'Price cannot be negative.'); return false; }
+            if (stock < 0) { e.preventDefault();
+                showAlert('danger', 'Stock cannot be negative.'); return false; }
+            if (rating < 0 || rating > 5) { e.preventDefault();
+                showAlert('danger', 'Rating must be between 0 and 5.'); return false; }
         });
     }
 });

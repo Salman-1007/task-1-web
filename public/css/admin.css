@@ -16,10 +16,12 @@ body {
     min-height: 100vh;
 }
 
+
 /* Sidebar */
+
 .admin-sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(180deg, #d06c6d 0%, #f0aeaf 100%);
     color: white;
     position: fixed;
     height: 100vh;
@@ -30,7 +32,7 @@ body {
 
 .sidebar-header {
     padding: 1.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(183, 96, 96, 0.1);
 }
 
 .sidebar-header h3 {
@@ -63,7 +65,7 @@ body {
 .nav-item.active {
     background-color: rgba(255, 255, 255, 0.15);
     color: white;
-    border-left-color: #3498db;
+    border-left-color: #e28293;
     font-weight: 500;
 }
 
@@ -72,7 +74,9 @@ body {
     text-align: center;
 }
 
+
 /* Main Content */
+
 .admin-main {
     flex: 1;
     margin-left: 260px;
@@ -103,7 +107,9 @@ body {
     padding: 2rem;
 }
 
+
 /* Dashboard Stats */
+
 .stat-card {
     background: white;
     border-radius: 8px;
@@ -144,7 +150,9 @@ body {
     font-size: 0.9rem;
 }
 
+
 /* Cards */
+
 .card {
     border: none;
     border-radius: 8px;
@@ -163,7 +171,9 @@ body {
     padding: 1.5rem;
 }
 
+
 /* Category List */
+
 .category-item {
     margin-bottom: 1rem;
 }
@@ -177,7 +187,9 @@ body {
     color: #2c3e50;
 }
 
+
 /* Products Table */
+
 .product-thumbnail {
     width: 60px;
     height: 60px;
@@ -197,7 +209,9 @@ body {
     vertical-align: middle;
 }
 
+
 /* Product Form */
+
 .product-form-container {
     max-width: 1000px;
 }
@@ -218,7 +232,9 @@ body {
     margin-top: 0.5rem;
 }
 
+
 /* Buttons */
+
 .btn {
     border-radius: 6px;
     font-weight: 500;
@@ -227,13 +243,13 @@ body {
 }
 
 .btn-primary {
-    background-color: #3498db;
-    border-color: #3498db;
+    background-color: #d86f87;
+    border-color: #db3487;
 }
 
 .btn-primary:hover {
-    background-color: #2980b9;
-    border-color: #2980b9;
+    background-color: #9b223e;
+    border-color: #ca3674;
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -242,13 +258,17 @@ body {
     transform: translateY(-1px);
 }
 
+
 /* Badges */
+
 .badge {
     padding: 0.35em 0.65em;
     font-weight: 500;
 }
 
+
 /* Pagination */
+
 .pagination {
     margin-top: 1.5rem;
 }
@@ -268,28 +288,29 @@ body {
     background-color: #f8f9fa;
 }
 
+
 /* Alerts */
+
 .alert {
     border-radius: 6px;
     border: none;
 }
 
+
 /* Responsive */
+
 @media (max-width: 768px) {
     .admin-sidebar {
         width: 100%;
         height: auto;
         position: relative;
     }
-
     .admin-main {
         margin-left: 0;
     }
-
     .admin-content {
         padding: 1rem;
     }
-
     .header-content {
         flex-direction: column;
         align-items: flex-start;
@@ -297,13 +318,17 @@ body {
     }
 }
 
+
 /* Loading States */
+
 .btn.loading {
     pointer-events: none;
     opacity: 0.6;
 }
 
+
 /* Empty States */
+
 .text-center.py-5 {
     padding: 3rem 1rem;
 }

@@ -8,300 +8,58 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/checkout.css">
-    <style>
-        .order-card {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            transition: box-shadow 0.3s;
-        }
-        
-        .order-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .order-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            padding: 1.5rem;
-            /* border-radius: 7px 7px 0 0; */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .order-number {
-            font-weight: 700;
-            color: #0d6efd;
-        }
-        
-        .order-status {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-processing {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .status-shipped {
-            background-color: #cfe2ff;
-            color: #084298;
-        }
-        
-        .status-delivered {
-            background-color: #d1e7dd;
-            color: #0f5132;
-        }
-        
-        .status-cancelled {
-            background-color: #f8d7da;
-            color: #842029;
-        }
-        
-        .order-body {
-            padding: 1.5rem;
-        }
-        
-        .order-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .order-item:last-child {
-            border-bottom: none;
-        }
-        
-        .item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-        
-        .item-details {
-            flex: 1;
-        }
-        
-        .item-price {
-            color: #0d6efd;
-            font-weight: 600;
-        }
-        
-        .order-footer {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-top: 1px solid #dee2e6;
-            border-radius: 0 0 7px 7px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .order-total {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0d6efd;
-        }
-        
-        .order-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .info-block {
-            background-color: #f8f9fa;
-            padding: 0.75rem;
-            border-radius: 4px;
-        }
-        
-        .info-label {
-            font-size: 0.85rem;
-            color: #6c757d;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .info-value {
-            font-weight: 500;
-            margin-top: 0.25rem;
-        }
-        
-        .empty-orders {
-            text-align: center;
-            padding: 3rem;
-        }
-        
-        .empty-orders i {
-            font-size: 4rem;
-            color: #ccc;
-            margin-bottom: 1rem;
-        }
-    </style>
 </head>
 
 <body>
     <%- include('partials/header') %>
 
-        <div class="container-fluid bg-light py-4">
-            <div class="container">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">My Orders</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-
         <div class="container py-5">
             <div class="row">
                 <div class="col-lg-10 mx-auto">
-                    <div class="mb-4">
-                        <h1 class="mb-2">My Orders</h1>
-                        <p class="text-muted">Track and manage your orders</p>
-                    </div>
+
+                    <h1 class="mb-4">My Orders</h1>
 
                     <% if (orders && orders.length > 0) { %>
                         <% orders.forEach(order => { %>
-                            <div class="order-card">
-                                <div class="order-header">
-                                    <div>
-                                        <div class="order-number">
-                                            <i class="fas fa-receipt me-2"></i>
-                                            <%= order.orderNumber %>
-                                        </div>
-                                        <div class="text-muted small mt-1">
-                                            Ordered on
-                                            <%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
-                                        </div>
-                                    </div>
-                                    <span class="order-status status-<%= order.status %>">
-                                <i class="fas fa-check-circle me-1"></i><%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
-                            </span>
+                            <div class="card mb-4">
+                                <div class="card-header d-flex justify-content-between">
+                                    <strong><%= order.orderNumber %></strong>
+                                    <span class="badge bg-secondary"><%= order.status %></span>
                                 </div>
 
-                                <div class="order-body">
-                                    <div class="order-info">
-                                        <div class="info-block">
-                                            <div class="info-label">
-                                                <i class="fas fa-user me-1"></i>Customer
-                                            </div>
-                                            <div class="info-value">
-                                                <%= order.customerName %>
-                                            </div>
-                                        </div>
-                                        <div class="info-block">
-                                            <div class="info-label">
-                                                <i class="fas fa-envelope me-1"></i>Email
-                                            </div>
-                                            <div class="info-value">
-                                                <%= order.email %>
-                                            </div>
-                                        </div>
-                                        <div class="info-block">
-                                            <div class="info-label">
-                                                <i class="fas fa-phone me-1"></i>Phone
-                                            </div>
-                                            <div class="info-value">
-                                                <%= order.phone || 'N/A' %>
-                                            </div>
-                                        </div>
-                                        <div class="info-block">
-                                            <div class="info-label">
-                                                <i class="fas fa-map-marker me-1"></i>Delivery Address
-                                            </div>
-                                            <div class="info-value">
-                                                <%= order.address %>,
-                                                    <%= order.city %>
-                                            </div>
-                                        </div>
-                                        <div class="info-block">
-                                            <div class="info-label">
-                                                <i class="fas fa-credit-card me-1"></i>Payment Method
-                                            </div>
-                                            <div class="info-value">
-                                                <%= order.paymentMethod === 'cod' ? 'Cash on Delivery' : order.paymentMethod.toUpperCase() %>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <h6 class="mt-4 mb-3">
-                                        <i class="fas fa-box me-2"></i>Order Items (
-                                        <%= order.items.length %>)
-                                    </h6>
+                                <div class="card-body">
                                     <% order.items.forEach(item => { %>
-                                        <div class="order-item">
-                                            <img src="<%= item.image %>" alt="<%= item.name %>" class="item-image" onerror="this.src='/images/placeholder.jpg'">
-                                            <div class="item-details">
-                                                <h6 class="mb-1">
-                                                    <%= item.name %>
-                                                </h6>
-                                                <div class="text-muted small">
-                                                    Quantity: <strong><%= item.quantity %></strong>
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                <div class="item-price">$
-                                                    <%= (item.price * item.quantity).toFixed(2) %>
-                                                </div>
-                                                <div class="text-muted small">@$
-                                                    <%= item.price.toFixed(2) %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <% }); %>
+                                        <p>
+                                            <strong><%= item.name %></strong> ×
+                                            <%= item.quantity %>
+                                                — $
+                                                <%= (item.price * item.quantity).toFixed(2) %>
+                                        </p>
+                                        <% }) %>
                                 </div>
 
-                                <div class="order-footer">
-                                    <div class="text-muted">
-                                        <% if (order.notes) { %>
-                                            <strong>Notes:</strong>
-                                            <%= order.notes %>
-                                                <% } %>
-                                    </div>
-                                    <div class="order-total">
-                                        Total: $
-                                        <%= order.total.toFixed(2) %>
-                                    </div>
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <strong>Total: $<%= order.total.toFixed(2) %></strong>
+
+                                    <% if (user && order.status === 'pending') { %>
+                                        <form method="POST" action="/orders/<%= order._id %>/delete" onsubmit="return confirm('Delete this order?')">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                        </form>
+                                        <% } %>
                                 </div>
                             </div>
-                            <% }); %>
+                            <% }) %>
                                 <% } else { %>
-                                    <div class="order-card">
-                                        <div class="order-body">
-                                            <div class="empty-orders">
-                                                <i class="fas fa-shopping-bag"></i>
-                                                <h3>No Orders Yet</h3>
-                                                <p class="text-muted mb-4">You haven't placed any orders yet.</p>
-                                                <a href="/products" class="btn btn-primary">
-                                                    <i class="fas fa-shopping-bag me-2"></i> Start Shopping
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p class="text-muted">No orders found.</p>
                                     <% } %>
+
                 </div>
             </div>
         </div>
 
         <%- include('partials/footer') %>
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="/js/main.js"></script>
 </body>
 
 </html>

@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 6,
-        select: false
+        select: false // Note: You must use .select('+password') when logging in
     },
     fullName: String,
     phone: String,
@@ -34,6 +34,14 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+});
+
+// --- Virtuals (Optional but helpful) ---
+// This allows you to easily get a user's orders if you use .populate()
+userSchema.virtual('orders', {
+    ref: 'Order',
+    localField: '_id',
+    foreignField: 'userId'
 });
 
 // Hash password before saving
@@ -53,6 +61,8 @@ userSchema.pre('save', async function(next) {
 
 // Method to compare passwords
 userSchema.methods.comparePassword = async function(enteredPassword) {
+    // Because 'password' is select: false, this only works if you 
+    // manually included the password in the query
     return await bcrypt.compare(enteredPassword, this.password);
 };
 

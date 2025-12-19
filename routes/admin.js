@@ -13,41 +13,21 @@ router.get('/', async(req, res) => {
         const totalStock = await Product.aggregate([{
             $group: {
                 _id: null,
-                total: {
-                    $sum: '$stock'
-                }
+                total: { $sum: '$stock' }
             }
         }]);
-        const lowStockProducts = await Product.countDocuments({
-            stock: {
-                $lt: 10
-            }
-        });
-        const featuredProducts = await Product.countDocuments({
-            featured: true
-        });
+        const lowStockProducts = await Product.countDocuments({ stock: { $lt: 10 } });
+        const featuredProducts = await Product.countDocuments({ featured: true });
 
-        // Get products by category
-        const productsByCategory = await Product.aggregate([{
-                $group: {
-                    _id: '$category',
-                    count: {
-                        $sum: 1
-                    }
-                }
-            },
-            {
-                $sort: {
-                    count: -1
-                }
-            }
+        // Products by category
+        const productsByCategory = await Product.aggregate([
+            { $group: { _id: '$category', count: { $sum: 1 } } },
+            { $sort: { count: -1 } }
         ]);
 
-        // Get recent products
+        // Recent products
         const recentProducts = await Product.find()
-            .sort({
-                createdAt: -1
-            })
+            .sort({ createdAt: -1 })
             .limit(5)
             .select('name price stock createdAt');
 
@@ -80,25 +60,13 @@ router.get('/products', async(req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
-        // Search filter
         const filter = {};
         if (req.query.search) {
-            filter.$or = [{
-                    name: {
-                        $regex: req.query.search,
-                        $options: 'i'
-                    }
-                },
-                {
-                    description: {
-                        $regex: req.query.search,
-                        $options: 'i'
-                    }
-                }
+            filter.$or = [
+                { name: { $regex: req.query.search, $options: 'i' } },
+                { description: { $regex: req.query.search, $options: 'i' } }
             ];
         }
-
-        // Category filter
         if (req.query.category && req.query.category !== 'all') {
             filter.category = req.query.category;
         }
@@ -107,9 +75,7 @@ router.get('/products', async(req, res) => {
         const totalPages = Math.ceil(totalProducts / limit);
 
         const products = await Product.find(filter)
-            .sort({
-                createdAt: -1
-            })
+            .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
 
@@ -144,7 +110,7 @@ router.get('/products/new', (req, res) => {
     res.render('admin/product-form', {
         title: 'Add New Product',
         page: 'add-product',
-        product: null,
+        product: {},
         categories: ['Electronics', 'Fashion', 'Home & Living', 'Health & Beauty', 'Sports & Gaming', 'Books & Media', 'Food & Beverages', 'Other']
     });
 });
@@ -212,6 +178,7 @@ router.post('/products/:id/edit', async(req, res) => {
         if (!product) {
             return res.status(404).render('admin/error', {
                 title: 'Not Found',
+                page: 'error',
                 message: 'Product not found.'
             });
         }

@@ -5,6 +5,10 @@ const router = express.Router();
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 const cartRoutes = require('./routes/cart');
+const orderRoutes = require('./routes/order');
+
+app.use('/', orderRoutes);
+
 
 // Use route modules
 router.use('/', indexRoutes);

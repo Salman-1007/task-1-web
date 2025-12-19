@@ -6,6 +6,12 @@ const orderSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    // New: Links the order to a specific User
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null // Allows for guest checkout if your logic permits it
+    },
     customerName: {
         type: String,
         required: true
@@ -14,11 +20,23 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    phone: String,
-    address: String,
-    city: String,
+    phone: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
     items: [{
-        productId: mongoose.Schema.Types.ObjectId,
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        },
         name: String,
         price: Number,
         quantity: Number,
@@ -47,6 +65,12 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+});
+
+// Automatically update the 'updatedAt' field on save
+orderSchema.pre('save', function(next) {
+    this.updatedAt = Date.now();
+    next();
 });
 
 module.exports = mongoose.model('Order', orderSchema);
